@@ -1,0 +1,156 @@
+
+import pandas as pd
+import random as rnd
+
+file_path = 'd:\Programozas\Ploglamok\DinosDTBv1.xlsx'
+df = pd.read_excel(file_path)
+nr_rows = len(df)
+nr_columns = len(df.columns)
+roster =[]
+
+class Dino():
+    def __init__(self, nm, lf, dmg, spe, armr, crit, ap, sw, act1, act2, act3, act4): #lehet h kellene Level, Swap, shield
+        self.nm = nm
+        self.lf = lf
+        self.dmg = dmg
+        self.spe = spe
+        self.armr = armr
+        self.crit = crit
+        self.ap = ap
+        self.sw = sw
+        self.act1 = act1
+        self.act2 = act2
+        self.act3 = act3
+        self.act4 = act4
+
+
+    def WriteName(self):
+        print(self.nm)
+
+for i in range(0, nr_rows):
+    roster.append(Dino(df.iat[i, 0], df.iat[i, 1], df.iat[i, 2], df.iat[i,3], df.iat[i,4], df.iat[i,5], df.iat[i,6], df.iat[i,7],df.iat[i,8],df.iat[i,9],df.iat[i,10], df.iat[i,11]))
+# Idaig be van olvasva az osszes adat es be van teve egy roster nevu tombbe
+
+"""
+1. ki kell irni egy user-uzenetet, hogy melyik ket dinot valasztja
+2. Fight 1-1 Dino
+3. Team Fight
+"""
+
+
+def fight(dino1, dino2):
+     rond =0
+     while True:
+        if dino1.spe > dino2.spe:
+            dino1.ap += 1
+        elif dino2.spe > dino1.spe:
+            dino2.ap += 1
+        else:
+            dino1.ap+=1   # Randommal dontsuk el hogy ki kapja az actionpontot ha egyforma gyorsak
+
+        if dino1.ap > dino2.ap:
+            dino2.lf = dino2.lf - dino1.dmg
+            dino2.ap += 1
+            dino1.ap -= 1
+            rond+=1
+            print ('Az {} utes {}e volt, {} elete: {}'.format(rond, dino1.nm, dino2.nm, dino2.lf))
+            if dino2.lf <= 0:
+                winner = dino1.nm
+                loser = dino2.nm
+                break
+        elif dino2.ap > dino1.ap:
+            dino1.lf = dino1.lf - dino2.dmg
+            dino1.ap += 1
+            dino2.ap -= 1
+            rond += 1
+            print('Az {} utes {}e volt, {} elete: {}'.format(rond, dino2.nm, dino1.nm, dino1.lf))
+            if dino1.lf <= 0 or dino2.lf <= 0:
+                winner = dino2.nm
+                loser = dino1.nm
+                break
+
+
+        if dino1.ap > dino2.ap:
+            dino2.lf = dino2.lf - dino1.dmg
+            dino2.ap += 0
+            dino1.ap -= 0
+            rond += 1
+            print('Az {} utes {}e volt, {} elete: {}'.format(rond, dino1.nm, dino2.nm, dino2.lf))
+            if dino2.lf <= 0:
+                winner = dino1.nm
+                loser = dino2.nm
+
+                break
+        elif dino2.ap > dino1.ap:
+            dino1.lf = dino1.lf - dino2.dmg
+            dino1.ap += 0
+            dino2.ap -= 0
+            rond += 1
+            print('Az {} utes {}e volt, {} elete: {}'.format(rond, dino2.nm, dino1.nm, dino1.lf))
+            if dino1.lf <= 0 :
+                winner = dino2.nm
+                loser = dino1.nm
+                break
+     return 'A csatat {} elvesztette {} kor alatt, a nyertes {}'. format(loser, int(rond/2), winner)
+              # MEG KELL OLDANI, hogy a koroket pontosan irja pl. EINA vs TRIC G2 5 utes, de az 3 kor
+
+# Szukseg van solofightFULL-ra is
+# Kell TeamFightSimple
+# Kell TeamFightFULL
+
+def teamfightSimul(list1, list2):
+    print ("O P E N E R")
+
+    #meghatarozom ki kezdjen
+    #meghatarozom az elso actet a gyorsabb csapatbol
+    # meghatarozom az elso actet a lassabb csapatbol
+    # Irjam ki, vagy ne irjam ki?
+
+
+
+
+#def teamfightUser
+
+
+
+
+
+
+
+
+
+print (
+    """Szia, ez a Jurassic World Alive harcainak szimulátorprogramja.
+    A lenti táblázat a választható dínókat mutatja.
+    Elsőként azt kell kiválasztanod, hogy egy vagy több dínó harcára vagy kíváncsi,
+    Másodikként, hogy Te szeretnél irányítani, vagy a gép szimulálja le a harcot és csak a győztesre vagy kíváncsi"""
+       ) # A user uzeneten meg dolgozni kell
+print (df)
+
+
+x = input('Egy vagy tobb dino e/t')
+if x =='e':
+    x1 = int(input('Kerlek ird be az elso dino sorszamat')) #ekezetek
+    x2 = int(input('Kerlek ird be a masodik dino sorszamat')) #masodik dino nem lehet olyan mint az elso
+    print (fight(roster[x1],roster[x2]))
+elif x=='t':
+    T11 = int(input('Kerlek ird be az 1. csapat elso dinojanak sorszamat'))
+    T21 = int(input('Kerlek ird be az 2. csapat elso dinojanak sorszamat'))
+    T12 = int(input('Kerlek ird be az 1. csapat masodik dinojanak sorszamat'))
+    T22 = int(input('Kerlek ird be az 2. csapat masodik dinojanak sorszamat'))
+    T13 = int(input('Kerlek ird be az 1. csapat harmadik dinojanak sorszamat'))
+    T23 = int(input('Kerlek ird be az 2. csapat elso dinojanak sorszamat'))
+    T14 = int(input('Kerlek ird be az 1. csapat elso dinojanak sorszamat'))
+    T24 = int(input('Kerlek ird be az 2. csapat elso dinojanak sorszamat'))
+    print('A ket csapat: Team 1: {}, {},{},{} Team 2: {} {} {} {} '. format(T11, T12, T13, T14, T21, T22, T23, T24))
+    list1 = [roster[T11], roster[T12], roster[T13], roster[T14]]
+    list2 = [roster[T21], roster[T22], roster[T23], roster[T24]]
+    szimul = int(input('Te szeretnel jatszani (ird be hogy '1' ), vagy szimulaljuk le a csatat 100x? (ird be, hogy 2)'))
+    if szimul = 1:
+        pass #teamfightUser
+    if szimul = 2:
+        pass #teamfightSimul
+
+
+else:
+    print ("Tamas mit irtal man ide? Vagy e vagy t :D ")
